@@ -1,0 +1,26 @@
+TUNING RANDOM FOREST MODELS WITH DIFFERENT PERFORMANCE METRICS:
+Below is an example of how to perform a repeated 10-fold cross validation analysis and how tune the Random Forest models using different performance metrics. It shows how to tune using Precision, Recall AND ROC-AUC.
+
+Variables:
+i_NW: the DIO time series of the NW region
+data_NW: a matrix with all the predictor time series and the DIO time series, for the NW region.
+
+Example of script (in R):
+#tune using Precision
+train.control<-trainControl(method="repeatedcv",number=10,repeats=5,summaryFunction=prSummary,classProbs=TRUE)
+set.seed(123)
+rf_fit_Precision_NW<-train(i_NW~.,data=data_NW,method="rf",ntree=1000,trControl=train.control,tuneLength=10,metric="Precision")
+
+#tune using Recall
+train.control<-trainControl(method="repeatedcv",number=10,repeats=5,summaryFunction=prSummary,classProbs=TRUE)
+set.seed(123)
+rf_fit_Precision_NW<-train(i_NW~.,data=data_NW,method="rf",ntree=1000,trControl=train.control,tuneLength=10,metric="Recall")
+
+#tune using AUC-ROC
+train.control<-trainControl(method="repeatedcv",number=10,repeats=5,summaryFunction=twoClassSummary,classProbs = TRUE)
+set.seed(123)
+rf_fit_ROC_NW<-train(i_NW~.,data=data_NW,method="rf",ntree=1000,trControl=train.control,tuneLength=10,metric="ROC")
+
+
+The performance metrics of these models can be found in the files named: 
+'CV_results_classification_PreRecF.csv', 'CV_results_regression.csv' and 'CV_results_classification_ROC-AUC.csv'.
